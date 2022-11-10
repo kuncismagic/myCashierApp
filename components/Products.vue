@@ -1,6 +1,48 @@
 <template>
+  <section id="produtcs">
+    <v-row align="center">
+      <v-col cols="10">
+        <v-autocomplete
+          label="Products"
+          placeholder="Find anything"
+          :search-input.sync="search"
+          :loading="isLoading"
+          :items="itemsSearch"
+          item-text="title"
+          item-value="id"
+          v-model="selectedSearch"
+          return-object
+          hide-no-data>
+
+        </v-autocomplete>
+    </v-col>
+    <v-col cols="2">
+      <v-menu>
+        <template v-slot:activator="{on: category}">
+          <v-btn
+            v-on="category"
+            color="primary">
+            Category
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item-group v-model="categoryId">
+            <v-list-item v-for="(category, index) in categories"
+            :key="index"
+            :value="category.id"
+            :disabled="category.id == categoryId">
+              <v-list-item-title>{{category.title}}</v-list-item-title>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-menu>
+    </v-col>
+  </v-row>
+
   <v-row>
-    <v-col v-for="(product, index) in products" cols="2">
+    <v-col v-for="(product, index) in filteredProducts" cols="2"
+    :key="index">
       <v-card :title="product.title"
 			:ripple="true">
         <v-card-actions>
@@ -15,14 +57,22 @@
       </v-card>
     </v-col>
   </v-row>
+</section>
 </template>
 
 <script>
 export default {
   data() {
     return {
+      categoryId: false,
+      categories: [
+        { id: false, title: 'All' },
+        { id: 1, title: 'Smartphone' },
+        { id: 2, title: 'Camera' },
+        { id: 3, title: 'Televisi' },
+      ],
       products: [
-		{ id: 1, title: 'Asus Zenfone', thumbnail: 'asus-zenfone.png', price: 2000000, categoryId: 1 },
+		  { id: 1, title: 'Asus Zenfone', thumbnail: 'asus-zenfone.png', price: 2000000, categoryId: 1 },
       { id: 2, title: 'Canon Eos 700d', thumbnail: 'canon-eos-700d.png', price: 4300000, categoryId: 2 },
       { id: 3, title: 'Canon Eos 750d', thumbnail: 'canon-eos-750d.png', price: 5400000, categoryId: 2 },
       { id: 4, title: 'Iphone 6 Silver', thumbnail: 'iphone-6-silver.png', price: 2500000, categoryId: 1 },
@@ -38,8 +88,41 @@ export default {
       { id: 14, title: 'Galaxy Note 3', thumbnail: 'samsung-galaxy-note-3.png', price: 4100000, categoryId: 1 },
       { id: 15, title: 'Sharp Led TV 32LE265i', thumbnail: 'sharp-32-led-32LE265i.png', price: 2300000, categoryId: 3 },
       ],
+      search: null,
+      isLoading: false,
+      itemsSearch: [],
+      selectedSearch: null,
     };
   },
+  methods: {
+    resetSearchCategory(){
+      this.categoryId = false
+    }
+  },
+  computed: {
+    filteredProducts() {
+      if(this.categoryId){
+        return this.products.filter(s => s.categoryId == this.categoryId)
+      }
+      else if(this.selectedSearch){
+        return this.products.filter(s => s.title == this.selectedSearch.title)
+      }
+      return this.products
+    }
+  },
+  watch: {
+    search(val){
+      console.log(val)
+      this.isLoading = true
+      setTimeout(() => {
+        this.itemsSearch = this.products.filter(e => {
+          this.isLoading = false
+          this.resetSearchCategory()
+          return e.title
+        })
+      }, 1000)
+    }
+  }
 };
 </script>
 
