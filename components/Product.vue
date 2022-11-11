@@ -67,12 +67,6 @@ export default {
   data() {
     return {
       categoryId: false,
-      categories: [
-        { id: false, title: 'All' },
-        { id: 1, title: 'Smartphone' },
-        { id: 2, title: 'Camera' },
-        { id: 3, title: 'Televisi' },
-      ],
       search: null,
       isLoading: false,
       itemsSearch: [],
@@ -95,7 +89,8 @@ export default {
       return this.products
     },
     ...mapState('products', {
-      products: 'products'
+      products: 'products',
+      categories: 'categories'
     })
   },
   watch: {
