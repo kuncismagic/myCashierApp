@@ -4,7 +4,6 @@
       <Product></Product>
     </v-col>
     <v-col cols="4" class="frame-content white">
-      ORDERS
       <Order></Order>
     </v-col>
   </v-row>
