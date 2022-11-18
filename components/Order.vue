@@ -7,8 +7,12 @@
 				:key="index">
 					<v-list-item-content>
 						<v-list-item-title>{{item.title}}</v-list-item-title>
-						<v-list-item-subtitle>{{currency(item.price)}}</v-list-item-subtitle>
+						<v-list-item-subtitle>{{currency(item.price)}} X {{item.quantity}}
+						</v-list-item-subtitle>
 					</v-list-item-content>
+					<v-list-item-actions>
+						<v-list-item-title>{{currency(itemTotal(item.price, item.quantity))}}</v-list-item-title>
+					</v-list-item-actions>
 				</v-list-item>
 			</v-list>
 		</v-col>
@@ -30,6 +34,7 @@ export default {
 		}),
 		...mapGetters('carts', {
 			cartItems: 'cartItems',
+			itemTotal: 'itemTotal'
 		})
 	},
 }
