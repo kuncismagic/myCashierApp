@@ -24,14 +24,21 @@
 								color="primary"
 								x-small
 								@click="increment(item.id)">
-							<v-icon>mdi-plus</v-icon>
+							<v-icon>mdi-plus-box</v-icon>
 						</v-btn>
 						</v-list-item-subtitle>
-
 					</v-list-item-content>
-					<v-list-item-actions>
+					
+					<v-list-item-action>
+						<v-btn
+								icon
+								color="error"
+								x-small
+								@click="remove(item.id)">
+							<v-icon>mdi-delete</v-icon>
+						</v-btn>
 						<v-list-item-title>{{currency(itemTotal(item.price, item.quantity))}}</v-list-item-title>
-					</v-list-item-actions>
+					</v-list-item-action>
 
 				</v-list-item>
 			</v-list>
@@ -46,7 +53,8 @@ export default {
 	methods: {
 		...mapActions('carts', {
 			increment: 'increment',
-			decrement: 'decrement'
+			decrement: 'decrement',
+			remove: 'remove'
 		}),
 		currency(value) {
 			return Intl.NumberFormat('en-US').format(value)
