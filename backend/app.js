@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import path from 'path';
 import mongoose from 'mongoose';
+import { store } from './controllers/CategoryControllers.js'
 
 import indexRouter from './routes/index.js';
 
@@ -12,6 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/', indexRouter);
+app.post('/categories', store);
 
 //connect to mongodb
 mongoose.connect(`${env.MONGODB_URI}${env.MONGODB_HOST}:${env.MONGODB_PORT}`, {
